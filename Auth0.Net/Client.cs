@@ -342,7 +342,8 @@
             return new TokenResult
             {
                 AccessToken = body["access_token"],
-                IdToken = body.ContainsKey("id_token") ? body["id_token"] : string.Empty
+                IdToken = body.ContainsKey("id_token") ? body["id_token"] : string.Empty,
+                RefreshToken = body.ContainsKey("refresh_token") ? body["refresh_token"] : string.Empty
             };
         }
 
