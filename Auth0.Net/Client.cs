@@ -415,7 +415,7 @@
 
         private UserProfile GetUserProfileFromJson(string jsonProfile)
         {
-            var ignoredProperties = new HashSet<string> { "iss", "sub", "aud", "exp", "iat" };
+            var ignoredProperties = new HashSet<string> { "iss", "aud", "exp", "iat" };
             var mappedProperties = new HashSet<string> 
             {
                 "email",
@@ -426,6 +426,7 @@
                 "name",
                 "nickname",
                 "picture",
+                "sub",
                 "user_id",
                 "identities"
             };
@@ -434,6 +435,12 @@
 
             var userProfile = JsonConvert.DeserializeObject<UserProfile>(jsonProfile);
             var responseData = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonProfile);
+
+            // Auth0 has deprecated the original claim for the UserId, this is a fallback to the deprecated version to ensure a seamless upgrade
+            if(string.IsNullOrEmpty(userProfile.UserId) && !string.IsNullOrEmpty(userProfile.LegacyUserId))
+            {
+                userProfile.UserId = userProfile.LegacyUserId;
+            }
 
             userProfile.ExtraProperties = responseData != null ?
                 ConvertJArrayToStringArray(ExcludeKeys(responseData, ignoredProperties)) :
