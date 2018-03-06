@@ -29,9 +29,12 @@ namespace Auth0
 
         [DataMember(Name = "picture")]
         public string Picture { get; set; }
-
-        [DataMember(Name ="user_id")]
+        
+        [DataMember(Name = "sub")]
         public string UserId { get; set; }
+
+        [DataMember(Name = "user_id")]
+        public string LegacyUserId { get; set; }
 
         [DataMember(Name = "identities")]
         public IEnumerable<Identity> Identities { get; set; }
